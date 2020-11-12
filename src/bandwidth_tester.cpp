@@ -17,7 +17,7 @@
 #include <vector>
 #include "CLI11.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "ros2_bandwidth_tester/idl/test_string.hpp"
 
 using namespace std::chrono_literals;
 
@@ -26,6 +26,7 @@ using namespace std::chrono_literals;
  * examples for the "new" recommended styles. This example is only included
  * for completeness because it is similar to "classic" standalone ROS nodes. */
 
+using MsgString = ros2_bandwidth_tester::idl::TestString;
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
@@ -43,12 +44,12 @@ int main(int argc, char * argv[])
 
   CLI11_PARSE(app, argc, argv);
   auto node = rclcpp::Node::make_shared("minimal_publisher");
-  std::vector<rclcpp::Publisher<std_msgs::msg::String>::SharedPtr> publishers;
+  std::vector<rclcpp::Publisher<MsgString>::SharedPtr> publishers;
   for (std::size_t i = 0; i < number_of_publishers; ++i)
   {
-      publishers.push_back(node->create_publisher<std_msgs::msg::String>("topic" + std::to_string(i), rclcpp::QoS(10).reliable()));
+      publishers.push_back(node->create_publisher<MsgString>("topic" + std::to_string(i), rclcpp::QoS(10).reliable()));
   }
-  std_msgs::msg::String message;
+  MsgString message;
   message.data = std::string(message_size_in_kb * 1024, 't');
   auto rate_type = 1ms * 1000/rate_hz;
   rclcpp::WallRate loop_rate(rate_type);

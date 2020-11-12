@@ -1,0 +1,9 @@
+
+module ros2_bandwidth_tester {
+  module idl {
+    struct TestString {
+      // 2MB
+      string<2097152> data;
+    };
+  };
+};  
